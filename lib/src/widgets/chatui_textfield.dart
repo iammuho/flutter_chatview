@@ -112,77 +112,70 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          textFieldConfig?.padding ?? const EdgeInsets.symmetric(horizontal: 6),
-      margin: textFieldConfig?.margin,
-      decoration: BoxDecoration(
-        borderRadius: textFieldConfig?.borderRadius ??
-            BorderRadius.circular(textFieldBorderRadius),
-        color: sendMessageConfig?.textFieldBackgroundColor ?? Colors.white,
-      ),
-      child: ValueListenableBuilder<bool>(
-        valueListenable: isRecording,
-        builder: (_, isRecordingValue, child) {
-          return Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  focusNode: widget.focusNode,
-                  controller: widget.textEditingController,
-                  style: textFieldConfig?.textStyle ??
-                      const TextStyle(color: Colors.white),
-                  maxLines: textFieldConfig?.maxLines ?? 5,
-                  minLines: textFieldConfig?.minLines ?? 1,
-                  keyboardType: textFieldConfig?.textInputType,
-                  inputFormatters: textFieldConfig?.inputFormatters,
-                  onChanged: _onChanged,
-                  textCapitalization: textFieldConfig?.textCapitalization ??
-                      TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                    hintText:
-                        textFieldConfig?.hintText ?? PackageStrings.message,
-                    fillColor: sendMessageConfig?.textFieldBackgroundColor ??
-                        Colors.white,
-                    filled: true,
-                    hintStyle: textFieldConfig?.hintStyle ??
-                        TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade600,
-                          letterSpacing: 0.25,
-                        ),
-                    contentPadding: textFieldConfig?.contentPadding ??
-                        const EdgeInsets.symmetric(horizontal: 6),
-                    border: _outLineBorder,
-                    focusedBorder: _outLineBorder,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-                      borderRadius: textFieldConfig?.borderRadius ??
-                          BorderRadius.circular(textFieldBorderRadius),
-                    ),
+        padding: textFieldConfig?.padding ??
+            const EdgeInsets.symmetric(horizontal: 6),
+        margin: textFieldConfig?.margin,
+        decoration: BoxDecoration(
+          borderRadius: textFieldConfig?.borderRadius ??
+              BorderRadius.circular(textFieldBorderRadius),
+          color: sendMessageConfig?.textFieldBackgroundColor ?? Colors.white,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                focusNode: widget.focusNode,
+                controller: widget.textEditingController,
+                style: textFieldConfig?.textStyle ??
+                    const TextStyle(color: Colors.white),
+                maxLines: textFieldConfig?.maxLines ?? 5,
+                minLines: textFieldConfig?.minLines ?? 1,
+                keyboardType: textFieldConfig?.textInputType,
+                inputFormatters: textFieldConfig?.inputFormatters,
+                onChanged: _onChanged,
+                textCapitalization: textFieldConfig?.textCapitalization ??
+                    TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  hintText: textFieldConfig?.hintText ?? PackageStrings.message,
+                  fillColor: sendMessageConfig?.textFieldBackgroundColor ??
+                      Colors.white,
+                  filled: true,
+                  hintStyle: textFieldConfig?.hintStyle ??
+                      TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey.shade600,
+                        letterSpacing: 0.25,
+                      ),
+                  contentPadding: textFieldConfig?.contentPadding ??
+                      const EdgeInsets.symmetric(horizontal: 6),
+                  border: _outLineBorder,
+                  focusedBorder: _outLineBorder,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: textFieldConfig?.borderRadius ??
+                        BorderRadius.circular(textFieldBorderRadius),
                   ),
                 ),
               ),
-              ValueListenableBuilder<String>(
-                valueListenable: _inputText,
-                builder: (_, inputTextValue, child) {
-                  return IconButton(
-                    color: sendMessageConfig?.defaultSendButtonColor ??
-                        Colors.green,
-                    onPressed: () {
-                      widget.onPressed();
-                      _inputText.value = '';
-                    },
-                    icon: sendMessageConfig?.sendButtonIcon ??
-                        const Icon(Icons.send),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
-    );
+            ),
+            ValueListenableBuilder<String>(
+              valueListenable: _inputText,
+              builder: (_, inputTextValue, child) {
+                return IconButton(
+                  color:
+                      sendMessageConfig?.defaultSendButtonColor ?? Colors.green,
+                  onPressed: () {
+                    widget.onPressed();
+                    _inputText.value = '';
+                  },
+                  icon: sendMessageConfig?.sendButtonIcon ??
+                      const Icon(Icons.send),
+                );
+              },
+            ),
+          ],
+        ));
   }
 
   void _onChanged(String inputText) {
