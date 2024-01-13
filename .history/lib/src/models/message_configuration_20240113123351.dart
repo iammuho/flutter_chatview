@@ -19,14 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/models/models.dart';
+import 'package:flutter/material.dart';
 
-library chatview;
+class MessageConfiguration {
+  /// Provides configuration of image message appearance.
+  final ImageMessageConfiguration? imageMessageConfig;
 
-export 'src/widgets/chat_view.dart';
-export 'src/models/models.dart';
-export 'src/widgets/chat_view_appbar.dart';
-export 'src/values/enumaration.dart';
-export 'src/controller/chat_controller.dart';
-export 'src/values/typedefs.dart';
-export 'src/models/receipts_widget_config.dart';
-export 'src/extensions/extensions.dart' show MessageTypes;
+  /// Provides configuration of image message appearance.
+  final MessageReactionConfiguration? messageReactionConfig;
+
+  /// Provides configuration of emoji messages appearance.
+  final EmojiMessageConfiguration? emojiMessageConfig;
+
+  /// Provides builder to create view for custom messages.
+  final Widget Function(Message)? customMessageBuilder;
+
+  /// Configurations for voice message bubble
+  final VoiceMessageConfiguration? voiceMessageConfig;
+
+  const MessageConfiguration({
+    this.imageMessageConfig,
+    this.messageReactionConfig,
+    this.emojiMessageConfig,
+    this.customMessageBuilder,
+    this.voiceMessageConfig,
+  });
+}

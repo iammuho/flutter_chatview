@@ -178,8 +178,6 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           const Icon(Icons.send),
                     );
                   }
-
-                  return Container();
                 },
               ),
             ],
@@ -187,6 +185,46 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
         },
       ),
     );
+  }
+
+  Future<void> _recordOrStop() async {
+    assert(
+      defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.android,
+      "Voice messages are only supported with android and ios platform",
+    );
+    if (!isRecording.value) {
+      await controller?.record();
+      isRecording.value = true;
+    } else {
+      final path = await controller?.stop();
+      isRecording.value = false;
+      widget.onRecordingComplete(path);
+    }
+  }
+
+  void _onIconPressed(
+    ImageSource imageSource, {
+    ImagePickerConfiguration? config,
+  }) async {
+    try {
+      final XFile? image = await _imagePicker.pickImage(
+        source: imageSource,
+        maxHeight: config?.maxHeight,
+        maxWidth: config?.maxWidth,
+        imageQuality: config?.imageQuality,
+        preferredCameraDevice:
+            config?.preferredCameraDevice ?? CameraDevice.rear,
+      );
+      String? imagePath = image?.path;
+      if (config?.onImagePicked != null) {
+        String? updatedImagePath = await config?.onImagePicked!(imagePath);
+        if (updatedImagePath != null) imagePath = updatedImagePath;
+      }
+      widget.onImageSelected(imagePath ?? '', '');
+    } catch (e) {
+      widget.onImageSelected('', e.toString());
+    }
   }
 
   void _onChanged(String inputText) {

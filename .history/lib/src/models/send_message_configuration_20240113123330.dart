@@ -45,6 +45,12 @@ class SendMessageConfiguration {
   /// Used to give color to close icon in reply pop-up.
   final Color? closeIconColor;
 
+  /// Provides configuration of image picker functionality.
+  final ImagePickerIconsConfiguration? imagePickerIconsConfig;
+
+  /// Provides configuration of image picker plugin.
+  final ImagePickerConfiguration? imagePickerConfiguration;
+
   /// Provides configuration of text field.
   final TextFieldConfiguration? textFieldConfig;
 
@@ -60,9 +66,14 @@ class SendMessageConfiguration {
   /// Color of mic icon when replying to some voice message.
   final Color? micIconColor;
 
+  /// Styling configuration for recorder widget.
+  final VoiceRecordingConfiguration? voiceRecordingConfiguration;
+
   const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,
+    this.imagePickerIconsConfig,
+    this.imagePickerConfiguration,
     this.defaultSendButtonColor,
     this.sendButtonIcon,
     this.replyDialogColor,
@@ -72,6 +83,7 @@ class SendMessageConfiguration {
     this.allowRecordingVoice = true,
     this.enableCameraImagePicker = true,
     this.enableGalleryImagePicker = true,
+    this.voiceRecordingConfiguration,
     this.micIconColor,
   });
 }

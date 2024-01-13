@@ -178,8 +178,6 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           const Icon(Icons.send),
                     );
                   }
-
-                  return Container();
                 },
               ),
             ],
@@ -187,6 +185,30 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
         },
       ),
     );
+  }
+
+  void _onIconPressed(
+    ImageSource imageSource, {
+    ImagePickerConfiguration? config,
+  }) async {
+    try {
+      final XFile? image = await _imagePicker.pickImage(
+        source: imageSource,
+        maxHeight: config?.maxHeight,
+        maxWidth: config?.maxWidth,
+        imageQuality: config?.imageQuality,
+        preferredCameraDevice:
+            config?.preferredCameraDevice ?? CameraDevice.rear,
+      );
+      String? imagePath = image?.path;
+      if (config?.onImagePicked != null) {
+        String? updatedImagePath = await config?.onImagePicked!(imagePath);
+        if (updatedImagePath != null) imagePath = updatedImagePath;
+      }
+      widget.onImageSelected(imagePath ?? '', '');
+    } catch (e) {
+      widget.onImageSelected('', e.toString());
+    }
   }
 
   void _onChanged(String inputText) {

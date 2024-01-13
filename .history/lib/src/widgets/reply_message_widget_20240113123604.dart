@@ -140,6 +140,16 @@ class ReplyMessageWidget extends StatelessWidget {
                                               Colors.white,
                                         ),
                                         const SizedBox(width: 2),
+                                        if (message.replyMessage
+                                                .voiceMessageDuration !=
+                                            null)
+                                          Text(
+                                            message.replyMessage
+                                                .voiceMessageDuration!
+                                                .toHHMMSS(),
+                                            style:
+                                                repliedMessageConfig?.textStyle,
+                                          ),
                                       ],
                                     )
                                   : Text(

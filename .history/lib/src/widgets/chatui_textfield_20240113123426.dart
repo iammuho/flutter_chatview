@@ -177,9 +177,61 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                       icon: sendMessageConfig?.sendButtonIcon ??
                           const Icon(Icons.send),
                     );
+                  } else {
+                    return Row(
+                      children: [
+                        if (!isRecordingValue) ...[
+                          if (sendMessageConfig?.enableCameraImagePicker ??
+                              true)
+                            IconButton(
+                              constraints: const BoxConstraints(),
+                              onPressed: () => _onIconPressed(
+                                ImageSource.camera,
+                                config:
+                                    sendMessageConfig?.imagePickerConfiguration,
+                              ),
+                              icon: imagePickerIconsConfig
+                                      ?.cameraImagePickerIcon ??
+                                  Icon(
+                                    Icons.camera_alt_outlined,
+                                    color:
+                                        imagePickerIconsConfig?.cameraIconColor,
+                                  ),
+                            ),
+                          if (sendMessageConfig?.enableGalleryImagePicker ??
+                              true)
+                            IconButton(
+                              constraints: const BoxConstraints(),
+                              onPressed: () => _onIconPressed(
+                                ImageSource.gallery,
+                                config:
+                                    sendMessageConfig?.imagePickerConfiguration,
+                              ),
+                              icon: imagePickerIconsConfig
+                                      ?.galleryImagePickerIcon ??
+                                  Icon(
+                                    Icons.image,
+                                    color: imagePickerIconsConfig
+                                        ?.galleryIconColor,
+                                  ),
+                            ),
+                        ],
+                        if (sendMessageConfig?.allowRecordingVoice ??
+                            true &&
+                                Platform.isIOS &&
+                                Platform.isAndroid &&
+                                !kIsWeb)
+                          IconButton(
+                            onPressed: _recordOrStop,
+                            icon: (isRecordingValue
+                                    ? voiceRecordingConfig?.micIcon
+                                    : voiceRecordingConfig?.stopIcon) ??
+                                Icon(isRecordingValue ? Icons.stop : Icons.mic),
+                            color: voiceRecordingConfig?.recorderIconColor,
+                          )
+                      ],
+                    );
                   }
-
-                  return Container();
                 },
               ),
             ],
@@ -187,6 +239,46 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
         },
       ),
     );
+  }
+
+  Future<void> _recordOrStop() async {
+    assert(
+      defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.android,
+      "Voice messages are only supported with android and ios platform",
+    );
+    if (!isRecording.value) {
+      await controller?.record();
+      isRecording.value = true;
+    } else {
+      final path = await controller?.stop();
+      isRecording.value = false;
+      widget.onRecordingComplete(path);
+    }
+  }
+
+  void _onIconPressed(
+    ImageSource imageSource, {
+    ImagePickerConfiguration? config,
+  }) async {
+    try {
+      final XFile? image = await _imagePicker.pickImage(
+        source: imageSource,
+        maxHeight: config?.maxHeight,
+        maxWidth: config?.maxWidth,
+        imageQuality: config?.imageQuality,
+        preferredCameraDevice:
+            config?.preferredCameraDevice ?? CameraDevice.rear,
+      );
+      String? imagePath = image?.path;
+      if (config?.onImagePicked != null) {
+        String? updatedImagePath = await config?.onImagePicked!(imagePath);
+        if (updatedImagePath != null) imagePath = updatedImagePath;
+      }
+      widget.onImageSelected(imagePath ?? '', '');
+    } catch (e) {
+      widget.onImageSelected('', e.toString());
+    }
   }
 
   void _onChanged(String inputText) {

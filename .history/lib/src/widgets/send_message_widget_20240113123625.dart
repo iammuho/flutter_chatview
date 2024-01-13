@@ -197,17 +197,22 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        state.message,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: widget.sendMessageConfig
-                                                  ?.replyMessageColor ??
-                                              Colors.black,
+                                      if (state.messageType.isVoice)
+                                        _voiceReplyMessageView
+                                      else if (state.messageType.isImage)
+                                        _imageReplyMessageView
+                                      else
+                                        Text(
+                                          state.message,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: widget.sendMessageConfig
+                                                    ?.replyMessageColor ??
+                                                Colors.black,
+                                          ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),

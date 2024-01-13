@@ -25,8 +25,10 @@ import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import '../utils/constants/constants.dart';
+import 'image_message_view.dart';
 import 'text_message_view.dart';
 import 'reaction_widget.dart';
+import 'voice_message_view.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({

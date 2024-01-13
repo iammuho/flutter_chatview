@@ -72,6 +72,7 @@ class SendMessageConfiguration {
     this.allowRecordingVoice = true,
     this.enableCameraImagePicker = true,
     this.enableGalleryImagePicker = true,
+    this.voiceRecordingConfiguration,
     this.micIconColor,
   });
 }

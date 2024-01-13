@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -140,6 +141,16 @@ class ReplyMessageWidget extends StatelessWidget {
                                               Colors.white,
                                         ),
                                         const SizedBox(width: 2),
+                                        if (message.replyMessage
+                                                .voiceMessageDuration !=
+                                            null)
+                                          Text(
+                                            message.replyMessage
+                                                .voiceMessageDuration!
+                                                .toHHMMSS(),
+                                            style:
+                                                repliedMessageConfig?.textStyle,
+                                          ),
                                       ],
                                     )
                                   : Text(

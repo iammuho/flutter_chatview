@@ -63,6 +63,8 @@ class SendMessageConfiguration {
   const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,
+    this.imagePickerIconsConfig,
+    this.imagePickerConfiguration,
     this.defaultSendButtonColor,
     this.sendButtonIcon,
     this.replyDialogColor,
@@ -72,6 +74,7 @@ class SendMessageConfiguration {
     this.allowRecordingVoice = true,
     this.enableCameraImagePicker = true,
     this.enableGalleryImagePicker = true,
+    this.voiceRecordingConfiguration,
     this.micIconColor,
   });
 }

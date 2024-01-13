@@ -21,6 +21,7 @@
  */
 import 'dart:io' if (kIsWeb) 'dart:html';
 
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/package_strings.dart';
@@ -197,17 +198,22 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        state.message,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: widget.sendMessageConfig
-                                                  ?.replyMessageColor ??
-                                              Colors.black,
+                                      if (state.messageType.isVoice)
+                                        _voiceReplyMessageView
+                                      else if (state.messageType.isImage)
+                                        _imageReplyMessageView
+                                      else
+                                        Text(
+                                          state.message,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: widget.sendMessageConfig
+                                                    ?.replyMessageColor ??
+                                                Colors.black,
+                                          ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -233,6 +239,27 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
               ),
             ),
           );
+  }
+
+  Widget get _voiceReplyMessageView {
+    return Row(
+      children: [
+        Icon(
+          Icons.mic,
+          color: widget.sendMessageConfig?.micIconColor,
+        ),
+        const SizedBox(width: 4),
+        if (replyMessage.voiceMessageDuration != null)
+          Text(
+            replyMessage.voiceMessageDuration!.toHHMMSS(),
+            style: TextStyle(
+              fontSize: 12,
+              color:
+                  widget.sendMessageConfig?.replyMessageColor ?? Colors.black,
+            ),
+          ),
+      ],
+    );
   }
 
   Widget get _imageReplyMessageView {

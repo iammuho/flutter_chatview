@@ -25,8 +25,10 @@ import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import '../utils/constants/constants.dart';
+import 'image_message_view.dart';
 import 'text_message_view.dart';
 import 'reaction_widget.dart';
+import 'voice_message_view.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({
@@ -196,6 +198,15 @@ class _MessageViewState extends State<MessageView>
                           isMessageBySender: widget.isMessageBySender,
                         ),
                     ],
+                  );
+                } else if (widget.message.messageType.isImage) {
+                  return ImageMessageView(
+                    message: widget.message,
+                    isMessageBySender: widget.isMessageBySender,
+                    imageMessageConfig: messageConfig?.imageMessageConfig,
+                    messageReactionConfig: messageConfig?.messageReactionConfig,
+                    highlightImage: widget.shouldHighlight,
+                    highlightScale: widget.highlightScale,
                   );
                 } else if (widget.message.messageType.isText) {
                   return TextMessageView(

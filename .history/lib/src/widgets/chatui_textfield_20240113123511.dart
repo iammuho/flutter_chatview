@@ -178,8 +178,6 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           const Icon(Icons.send),
                     );
                   }
-
-                  return Container();
                 },
               ),
             ],
